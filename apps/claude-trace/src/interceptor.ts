@@ -21,9 +21,12 @@ export class ClaudeTrafficLogger {
 	private htmlGenerator: HTMLGenerator;
 
 	constructor(config: InterceptorConfig = {}) {
+		// Check environment variable for HTML generation (defaults to true)
+		const enableHTMLFromEnv = process.env.CLAUDE_TRACE_GENERATE_HTML !== "false";
+
 		this.config = {
 			logDirectory: ".claude-trace",
-			enableRealTimeHTML: true,
+			enableRealTimeHTML: enableHTMLFromEnv,
 			logLevel: "info",
 			...config,
 		};
@@ -51,7 +54,11 @@ export class ClaudeTrafficLogger {
 		// Output the actual filenames with absolute paths
 		console.log(`Logs will be written to:`);
 		console.log(`  JSONL: ${path.resolve(this.logFile)}`);
-		console.log(`  HTML:  ${path.resolve(this.htmlFile)}`);
+		if (this.config.enableRealTimeHTML) {
+			console.log(`  HTML:  ${path.resolve(this.htmlFile)}`);
+		} else {
+			console.log(`  HTML:  (disabled via --no-html)`);
+		}
 	}
 
 	private isClaudeAPI(url: string | URL): boolean {
