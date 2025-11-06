@@ -56,8 +56,6 @@ export class ClaudeTrafficLogger {
 		console.log(`  JSONL: ${path.resolve(this.logFile)}`);
 		if (this.config.enableRealTimeHTML) {
 			console.log(`  HTML:  ${path.resolve(this.htmlFile)}`);
-		} else {
-			console.log(`  HTML:  (disabled via --no-html)`);
 		}
 	}
 
